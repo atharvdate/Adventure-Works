@@ -1,1 +1,1 @@
-Azure Data Engineering End-To-End Project | Azure Data Factory | Databricks | Pyspark | Azure Synapse Anlaytics
+Data Engineering Project using Azure Data Factory, Databricks, Pyspark, Azure Synapse Anlaytics

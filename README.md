@@ -6,7 +6,7 @@ End-to-end Azure Data Engineering project implementing the Medallion Architectur
 
 ## Architecture
 
-![Architecture](docs/architecture.png)
+![Architecture](docs/screenshots/09_architecture.png)
 
 ---
 
@@ -91,24 +91,9 @@ README.md
 
 ---
 
-## Screenshots
-
-| Resource | Image |
-|----------|-------|
-| Resource Group | docs/screenshots/resource-group.png |
-| Storage Account | docs/screenshots/storage-account.png |
-| Containers | docs/screenshots/containers.png |
-| Parameters Container | docs/screenshots/parameters-container.png |
-| Raw Container | docs/screenshots/raw-container.png |
-| Data Factory Pipelines | docs/screenshots/adf-pipelines.png |
-| Dynamic Pipeline | docs/screenshots/dynamic-pipeline.png |
-| Linked Services | docs/screenshots/linked-services.png |
-
----
-
 ## Roadmap
 
-- Bronze Layer ✓
+- Bronze Layer
 - Silver Layer (Databricks + PySpark)
 - Gold Layer (Synapse)
 - Power BI Dashboard

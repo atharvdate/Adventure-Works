@@ -1,4 +1,4 @@
-# Building an End-to-End Data Engineering Solution with Azure ✨
+# Building an End-to-End Data Engineering Solution with Azure
 
 In this blog, I share a comprehensive guide to designing an end-to-end (E2E) data engineering pipeline using Azure's powerful tools. The project processes, transforms, and delivers data for Business Intelligence (BI) purposes, leveraging resources like Azure Data Factory, Azure Databricks, Azure Synapse Analytics, and Power BI. The data source is the **AdventureWorks dataset**, fetched directly from GitHub. Here’s how the solution is structured:
 
@@ -9,7 +9,7 @@ In this blog, I share a comprehensive guide to designing an end-to-end (E2E) dat
 
 ## **Architecture Overview**
 
-### **Step 1: Setting Up the Azure Environment** ⚙️
+### **Step 1: Setting Up the Azure Environment**
 
 To start, the following Azure resources were provisioned:
 
@@ -23,7 +23,7 @@ All resources were configured with proper Identity and Access Management (IAM) r
 
 ---
 
-### **Step 2: Implementing the Data Pipeline Using ADF** 🚀
+### **Step 2: Implementing the Data Pipeline Using ADF**
 
 **Azure Data Factory (ADF)** serves as the backbone for orchestrating the data pipeline.
 
@@ -41,7 +41,7 @@ The raw data is now securely stored and ready for transformation.
 
 ---
 
-### **Step 3: Data Transformation with Azure Databricks** 🔄
+### **Step 3: Data Transformation with Azure Databricks**
 
 Using Azure Databricks, the raw data from the bronze container was transformed into a structured format.
 
@@ -66,7 +66,7 @@ Using Azure Databricks, the raw data from the bronze container was transformed i
 
 ---
 
-### **Step 4: Data Warehousing with Azure Synapse Analytics** 📊
+### **Step 4: Data Warehousing with Azure Synapse Analytics**
 
 Azure Synapse Analytics structured the processed data for analysis and BI reporting.
 
@@ -90,7 +90,7 @@ The cleaned, structured data was then moved to the gold container for reporting 
 
 ---
 
-### **Step 5: Business Intelligence Integration** 🕵️‍♂️
+### **Step 5: Business Intelligence Integration**
 
 The final step involved integrating the data with a BI tool to visualize and generate insights.
 

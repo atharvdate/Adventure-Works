@@ -1,0 +1,29 @@
+@"
+# Azure / credentials
+*.key
+*.pem
+*.pfx
+*.publishsettings
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Databricks
+.databricks/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+"@ | Set-Content .gitignore

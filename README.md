@@ -1,119 +1,149 @@
-# Building an End-to-End Data Engineering Solution with Azure
+# End-to-End Data Engineering Pipeline on Azure
 
-In this blog, I share a comprehensive guide to designing an end-to-end (E2E) data engineering pipeline using Azure's powerful tools. The project processes, transforms, and delivers data for Business Intelligence (BI) purposes, leveraging resources like Azure Data Factory, Azure Databricks, Azure Synapse Analytics, and Power BI. The data source is the **AdventureWorks dataset**, fetched directly from GitHub. Here’s how the solution is structured:
+An end-to-end data engineering project built using Microsoft Azure services to ingest, process, transform, and serve data for analytics and reporting.
 
+The project uses the AdventureWorks dataset as the source and implements a layered data pipeline using Azure Data Factory, Azure Data Lake Storage, Azure Databricks, Azure Synapse Analytics, and Power BI.
 
 ![Project Architecture](docs/screenshots/09_architecture.png)
 
 ---
 
-## **Architecture Overview**
+## Project Overview
 
-### **Step 1: Setting Up the Azure Environment**
+The objective of this project was to build a complete cloud-based data engineering workflow that takes raw data from an external source, stores it in a data lake, transforms it using distributed processing, and makes the processed data available for analytical reporting.
 
-To start, the following Azure resources were provisioned:
+The pipeline follows a layered approach:
 
-- **Azure Data Factory (ADF):** Used for data orchestration and automation.
-- **Azure Storage Account:** Acts as the data lake, storing raw (bronze), transformed (silver), and curated (gold) data.
-- **Azure Databricks:** Performs data transformations and computations.
-- **Azure Synapse Analytics:** Handles data warehousing for BI use.
+**Source → Raw/Bronze → Transformation/Silver → Analytics/Gold → Power BI**
 
-All resources were configured with proper Identity and Access Management (IAM) roles to ensure seamless integration and security.
-![Project Architecture](docs/screenshots/10_overview.png)
+The main Azure services used in the project are:
 
----
-
-### **Step 2: Implementing the Data Pipeline Using ADF**
-
-**Azure Data Factory (ADF)** serves as the backbone for orchestrating the data pipeline.
-
-1. **Dynamic Copy Activity:**
-   - ADF pulls data from GitHub using an HTTP connector and stores it in the bronze container in Azure Storage.
-   - Parameters were added to the pipeline for adaptability to changes in the data source.
-  
-     ![Project Architecture](docs/screenshots/07_dynamic_pipeline.png)
-
-
-The raw data is now securely stored and ready for transformation.
-
-![Project Architecture](docs/screenshots/04_raw_container.png)
-
+- **Azure Data Factory** – pipeline orchestration and data ingestion
+- **Azure Data Lake Storage Gen2** – storage for different data layers
+- **Azure Databricks** – data processing and transformation
+- **Azure Synapse Analytics** – querying and analytical data serving
+- **Power BI** – visualization and reporting
 
 ---
 
-### **Step 3: Data Transformation with Azure Databricks**
+## Technology Stack
 
-Using Azure Databricks, the raw data from the bronze container was transformed into a structured format.
-
-#### Key Steps:
-- **Cluster Setup:** A Databricks cluster was created to process the data efficiently.
-- **Data Lake Integration:** Databricks connected to Azure Storage to access the raw data.
-
-  ![Project Architecture](docs/screenshots/11_cluster.png)
-
-
-#### Transformations:
-- Normalized date formats for consistency.
-- Cleaned and filtered invalid or incomplete records.
-- Grouped and concatenated data to make it more usable for analysis.
-- Saved the transformed data in the silver container in Parquet format for optimal storage and query performance.
-
-  ![Project Architecture](docs/screenshots/12_clusterScript.png)
-
-  ![Project Architecture](docs/screenshots/13_transform_container.png)
-
-
+| Technology | Purpose |
+|---|---|
+| Azure Data Factory | Data ingestion and orchestration |
+| Azure Data Lake Storage Gen2 | Data lake and layered storage |
+| Azure Databricks | Data transformation and processing |
+| Azure Synapse Analytics | Analytical querying and data serving |
+| Power BI | Reporting and visualization |
+| Git / GitHub | Source control and project documentation |
 
 ---
 
-### **Step 4: Data Warehousing with Azure Synapse Analytics**
+## Architecture
 
-Azure Synapse Analytics structured the processed data for analysis and BI reporting.
+The solution is organized into multiple stages, with each service handling a specific part of the data engineering workflow.
 
-#### Steps:
-1. **Connection to Silver Container:** Configured Synapse to query data directly from Azure Storage.
-2. **Serverless SQL Pools:** Enabled querying without provisioning upfront resources.
-3. **Database and Schema Creation:**
-   - Created SQL databases and schemas to organize data.
-   - Defined external tables and views for BI consumption.
-  
-     ![Project Architecture](docs/screenshots/14_synapse_dev.png)
+![Azure Environment](docs/screenshots/10_overview.png)
 
-     ![Project Architecture](docs/screenshots/14_synapse_dev2.png)
+### Data Flow
 
-
-
-The cleaned, structured data was then moved to the gold container for reporting purposes.
-
-![Project Architecture](docs/screenshots/16_gold_layer.png)
-
+1. Data is ingested from the external source using Azure Data Factory.
+2. The raw data is stored in the Raw/Bronze layer of Azure Data Lake Storage.
+3. Azure Databricks reads the raw data and performs the required transformations.
+4. The transformed data is stored in the Silver layer in an optimized format.
+5. Azure Synapse Analytics is used to query and serve the processed data.
+6. The resulting data is organized into the Gold layer for analytics.
+7. Power BI consumes the processed data to create analytical reports.
 
 ---
 
-### **Step 5: Business Intelligence Integration**
+## Data Ingestion with Azure Data Factory
 
-The final step involved integrating the data with a BI tool to visualize and generate insights.
+Azure Data Factory is used as the orchestration layer of the pipeline.
 
-- **Power BI Integration:**
-   - Connected Power BI to Azure Synapse Analytics.
-   - Designed dashboards and reports to present actionable insights to stakeholders.
- 
-     ![Project Architecture](docs/screenshots/17_powerBi.png)
+I implemented a parameterized ingestion pipeline that retrieves data from the source and dynamically moves it into the Raw/Bronze layer of the data lake.
 
+The pipeline uses:
+
+- HTTP-based data ingestion
+- Parameterized datasets
+- Dynamic pipeline configuration
+- Lookup activity
+- ForEach activity
+- Dynamic Copy Activity
+
+![ADF Dynamic Pipeline](docs/screenshots/07_dynamic_pipeline.png)
+
+The raw data is stored in the data lake before any transformation is applied.
+
+![Raw Container](docs/screenshots/04_raw_container.png)
+
+This separation keeps the original source data available for downstream processing and reprocessing when required.
 
 ---
 
-## **Key Takeaways**
+## Data Transformation with Azure Databricks
 
-This project demonstrates the power of Azure’s ecosystem in creating a robust data engineering pipeline. By combining tools like ADF, Databricks, Synapse Analytics, and Power BI, the solution achieves:
+Azure Databricks is used as the processing layer of the pipeline.
 
-- **Automation:** Seamlessly moves data through different stages.
-- **Scalability:** Handles large datasets with ease.
-- **Efficiency:** Optimizes storage and querying with Parquet format and serverless SQL pools.
-- **Actionable Insights:** Delivers data to stakeholders through interactive BI dashboards.
+I configured a Databricks environment to access the raw data from Azure Data Lake Storage and perform the required transformations.
+
+### Processing Workflow
+
+The transformation process includes:
+
+- Reading raw data from the data lake
+- Data cleaning and filtering
+- Data type and date normalization
+- Transforming the source data into an analytics-friendly structure
+- Writing the processed output back to the data lake
+
+![Databricks Cluster](docs/screenshots/11_cluster.png)
+
+The transformation logic is implemented through a Databricks notebook/script.
+
+![Databricks Transformation Script](docs/screenshots/12_clusterScript.png)
+
+The processed data is then written to the Silver layer.
+
+![Silver Layer](docs/screenshots/13_transform_container.png)
+
+Parquet is used for the transformed data to provide a more efficient format for downstream analytical workloads.
 
 ---
 
-This end-to-end solution exemplifies how modern data-driven businesses can leverage Azure to transform raw data into meaningful insights, driving informed decision-making.
+## Data Serving with Azure Synapse Analytics
+
+Azure Synapse Analytics is used to provide an analytical layer over the processed data.
+
+I configured Synapse to work with the data stored in Azure Data Lake Storage and created the required database objects for querying and analysis.
+
+The implementation includes:
+
+- Synapse workspace configuration
+- Serverless SQL querying
+- Database and schema creation
+- External data access
+- SQL-based data analysis
+
+![Synapse Development](docs/screenshots/14_synapse_dev.png)
+
+![Synapse Development](docs/screenshots/15_synapse_dev2.png)
+
+The processed data is organized into the Gold layer to provide a curated dataset for reporting and analytical consumption.
+
+![Gold Layer](docs/screenshots/16_gold_layer.png)
+
+---
+
+## Business Intelligence
+
+Power BI is used as the final consumption layer of the pipeline.
+
+The processed data is connected to Power BI to create dashboards and visualizations that allow the data to be analyzed from a business perspective.
+
+![Power BI Dashboard](docs/screenshots/17_powerBi.png)
+
+This completes the pipeline from raw source data to an end-user analytics layer.
 
 ---

@@ -14,7 +14,7 @@ The objective of this project was to build a complete cloud-based data engineeri
 
 The pipeline follows a layered approach:
 
-**Source → Raw/Bronze → Transformation/Silver → Analytics/Gold → Power BI**
+**Source → Raw/Bronze → Transformation/Silver → Serving/Gold → Power BI**
 
 The main Azure services used in the project are:
 
